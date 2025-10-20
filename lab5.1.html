@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="houseCanvas" width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('houseCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawHouse() {
+            // Небо
+            ctx.fillStyle = '#87CEFA';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Земля
+            ctx.fillStyle = '#00FF7F';
+            ctx.fillRect(0, 250, canvas.width, 150);
+            // Забор
+            drawFence(50, 250, 150, 50);
+            drawFence(400, 250, 150, 50);
+            // Основание
+            ctx.fillStyle = '#F4A460';
+            ctx.fillRect(200, 150, 200, 150);
+            // Крыша
+            ctx.fillStyle = '#8B4513';
+            ctx.beginPath();
+            ctx.moveTo(180, 150);
+            ctx.lineTo(300, 80);
+            ctx.lineTo(420, 150);
+            ctx.closePath();
+            ctx.fill();
+            // Дверь
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(320, 210, 60, 90);           
+            // Ручка
+            ctx.fillStyle = 'gold';
+            ctx.beginPath();
+            ctx.arc(370, 255, 5, 0, Math.PI * 2);
+            ctx.fill();
+            // Окно
+            ctx.fillStyle = '#87CEFA';
+            ctx.fillRect(220, 180, 60, 50);            
+            // Рама окна
+            ctx.strokeStyle = '#8B4513';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(220, 180, 60, 50);
+            ctx.beginPath();
+            ctx.moveTo(250, 180);
+            ctx.lineTo(250, 230);
+            ctx.moveTo(220, 205);
+            ctx.lineTo(280, 205);
+            ctx.stroke();
+        }
+
+        function drawFence(x, y, width, height) {
+            const postWidth = 10;
+            const postHeight = 60;
+            const railHeight = 10;
+            const gap = 20;
+
+            // Нижняя доска
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(x, y, width, railHeight);
+            // Верхняя доска
+            ctx.fillRect(x, y - 30, width, railHeight);
+            // Столбы
+            for (let i = 0; i <= width; i += gap) {
+                ctx.fillRect(x + i, y - postHeight, postWidth, postHeight);
+            }
+        }
+
+        drawHouse();
+    </script>
+</body>
+</html>

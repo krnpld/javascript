@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="circle" width="400" height="400"></canvas>
+  
+    <script>
+        const canvas = document.getElementById("circle");
+        const ctx = canvas.getContext("2d");
+  
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 180;
+        const lineCount = 40;
+  
+        // Круг
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+  
+        const bottomX = centerX;
+        const bottomY = centerY + radius;
+  
+        // Линии
+        for (let i = 0; i < lineCount; i++) {
+            const angle = (i * 2 * Math.PI) / lineCount;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+  
+            ctx.beginPath();
+            ctx.moveTo(bottomX, bottomY);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>

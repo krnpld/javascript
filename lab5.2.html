@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div>
+        <label>
+            <input type="checkbox" id="red" checked> Красный
+        </label>
+        <label>
+            <input type="checkbox" id="green" checked> Зелёный
+        </label>
+        <label>
+            <input type="checkbox" id="blue" checked> Синий
+        </label>
+        <br>
+        <label>Скорость: 
+            <input type="range" id="speed" min="50" max="1000" value="300">
+            <span id="speedValue">300ms</span>
+        </label>
+        <button id="startBtn">Начать</button>
+        <button id="stopBtn">Остановить</button>
+    </div>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+        let intervalId = null;
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function draw() {
+            const x = Math.floor(canvas.width * Math.random());
+            const y = Math.floor(canvas.height * Math.random());
+            const width = 30 + Math.floor(70 * Math.random());
+            const height = 30 + Math.floor(70 * Math.random());
+            
+            let r = 0, g = 0, b = 0;
+            if (document.getElementById('red').checked) r = Math.floor(256 * Math.random());
+            if (document.getElementById('green').checked) g = Math.floor(256 * Math.random());
+            if (document.getElementById('blue').checked) b = Math.floor(256 * Math.random());
+            
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.fillRect(x, y, width, height);
+        }
+        
+        function updateSpeed() {
+            const speed = document.getElementById('speed').value;
+            document.getElementById('speedValue').textContent = speed + 'ms';
+            
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = setInterval(draw, speed);
+            }
+        }
+        
+        document.getElementById('startBtn').onclick = function() {
+            if (!intervalId) {
+                const speed = document.getElementById('speed').value;
+                intervalId = setInterval(draw, speed);
+            }
+        };
+        
+        document.getElementById('stopBtn').onclick = function() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        };
+        
+        document.getElementById('speed').oninput = updateSpeed;
+    </script>
+</body>
+</html>
