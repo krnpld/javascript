@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        var canvas, ctx;
+        var color = 'red';
+        var squareSize = 20;
+
+        function init() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+
+            canvas.addEventListener('mousedown', drawSquareAtMouse);
+
+            document.addEventListener('keydown', changeColor);
+        }
+
+        function drawSquareAtMouse(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            ctx.fillStyle = color;
+            ctx.fillRect(mouseX - squareSize / 2, mouseY - squareSize / 2, squareSize, squareSize);
+        }
+
+        function changeColor(event) {
+            if (event.keyCode == '49' || event.keyCode == '97') { color = 'red'; }
+            if (event.keyCode == '50' || event.keyCode == '98') { color = 'blue'; }
+            if (event.keyCode == '51' || event.keyCode == '99') { color = 'green'; }
+        }
+    </script>
+</head>
+<body onload="init();">
+    <canvas id="canvas" width="640" height="480" style="border:1px solid black;"></canvas>
+</body>
+</html>
