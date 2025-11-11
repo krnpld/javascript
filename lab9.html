@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: rgb(244, 244, 244);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .controls {
+      background: rgb(255, 255, 255);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+    }
+    canvas {
+      background: rgb(255, 255, 255);
+      border: 1px solid rgb(204, 204, 204);
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label>
+      Радиус по X:
+      <input type="number" id="radiusX" value="100" min="10" max="300">
+    </label>
+    <label>
+      Радиус по Y:
+      <input type="number" id="radiusY" value="60" min="10" max="300">
+    </label>
+    <label>
+      Толщина контура:
+      <input type="number" id="lineWidth" value="3" min="1" max="20">
+    </label>
+    <label>
+      Цвет контура:
+      <input type="color" id="strokeColor" value="#000000">
+    </label>
+    <label>
+      Цвет заливки:
+      <input type="color" id="fillColor" value="#ff0000">
+    </label>
+    <label>
+      Заливка:
+      <input type="checkbox" id="fillEnabled" checked>
+    </label>
+  </div>
+
+  <canvas id="canvas" width="500" height="400">
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const radiusXInput = document.getElementById('radiusX');
+    const radiusYInput = document.getElementById('radiusY');
+    const lineWidthInput = document.getElementById('lineWidth');
+    const strokeColorInput = document.getElementById('strokeColor');
+    const fillColorInput = document.getElementById('fillColor');
+    const fillEnabledInput = document.getElementById('fillEnabled');
+
+    function drawEllipse() {
+      const radiusX = parseFloat(radiusXInput.value);
+      const radiusY = parseFloat(radiusYInput.value);
+      const lineWidth = parseFloat(lineWidthInput.value);
+      const strokeColor = strokeColorInput.value;
+      const fillColor = fillColorInput.value;
+      const fillEnabled = fillEnabledInput.checked;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      ctx.lineWidth = lineWidth;
+      ctx.strokeStyle = strokeColor;
+      ctx.fillStyle = fillColor;
+
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+
+      if (fillEnabled) ctx.fill();
+      ctx.stroke();
+    }
+
+    document.querySelectorAll('.controls input').forEach(input => {
+      input.addEventListener('change', drawEllipse);
+    });
+
+    drawEllipse();
+  </script>
+</body>
+</html>

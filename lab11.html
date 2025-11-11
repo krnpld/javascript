@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body { font-family: sans-serif; text-align: center; }
+  canvas { border: 2px solid #333; margin-top: 10px; cursor: grab; }
+</style>
+<script>
+let canvas, ctx;
+let circle = { x: 200, y: 200, r: 50, color: "#ff6f61" };
+let isDragging = false;
+let offsetX, offsetY;
+
+const colors = [
+  "#ff6f61",
+  "#6a5acd",
+  "#2ecc71"
+];
+let currentColorIndex = 0;
+
+function init() {
+  canvas = document.getElementById("canvas");
+  ctx = canvas.getContext("2d");
+
+  canvas.addEventListener("mousedown", onMouseDown);
+  canvas.addEventListener("mousemove", onMouseMove);
+  canvas.addEventListener("mouseup", onMouseUp);
+  window.addEventListener("keydown", onKeyDown);
+
+  draw();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2);
+  ctx.fillStyle = circle.color;
+  ctx.fill();
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function onMouseDown(e) {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const dx = mx - circle.x;
+  const dy = my - circle.y;
+
+  if (dx * dx + dy * dy <= circle.r * circle.r) {
+    isDragging = true;
+    offsetX = dx;
+    offsetY = dy;
+    circle.color = "#b0b0b0";
+    canvas.style.cursor = "grabbing";
+    draw();
+  }
+}
+
+function onMouseMove(e) {
+  if (!isDragging) return;
+  const rect = canvas.getBoundingClientRect();
+  let mx = e.clientX - rect.left;
+  let my = e.clientY - rect.top;
+
+  circle.x = Math.min(Math.max(circle.r, mx - offsetX), canvas.width - circle.r);
+  circle.y = Math.min(Math.max(circle.r, my - offsetY), canvas.height - circle.r);
+  draw();
+}
+
+function onMouseUp() {
+  if (isDragging) {
+    isDragging = false;
+    circle.color = colors[currentColorIndex];
+    canvas.style.cursor = "grab";
+    draw();
+  }
+}
+
+function onKeyDown(e) {
+  if (e.key === "1") { currentColorIndex = 0; circle.color = colors[0]; }
+  if (e.key === "2") { currentColorIndex = 1; circle.color = colors[1]; }
+  if (e.key === "3") { currentColorIndex = 2; circle.color = colors[2]; }
+  draw();
+}
+</script>
+</head>
+<body onload="init()">
+<canvas id="canvas" width="600" height="400"></canvas>
+</body>
+</html>
